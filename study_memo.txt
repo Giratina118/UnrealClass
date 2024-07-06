@@ -1,0 +1,135 @@
+액터: 월드에 배치하는 오브젝트
+블루프린트 클래스: 액터의 코드, 이벤트 그래프가 메인,
+	따로 함수를 만들어 이 곳에서 사용 가능
+	컴포넌트에서 오브젝트를 만들어줘야 함
+	컴파일, 저장 해줘야 함
+이벤트 그래프: begin play(start), 틱(update), play 종료, destroy,
+	커스텀 이벤트도 가능
+월드 세팅 -> 게임모드 오버라이드 -> GameModeBase
+	-> 게임 씬 자유롭게 이동하면서 보기 가능
+
+게임 시작 맵(씬) 변경
+보기 -> 프로젝트 세팅 -> 맵&모드 -> 에디터 시작 맵 변경
+단축키 C 주석달기
+
+기본 함수 (화살표를 빈 공간으로 끌어놓거나 마우스 오른쪽 버튼으로 생성 가능)
+Print String
+Append 두 개의 문자열 연결
++-*/ 등, <=> 등
+
+Set Actor Location (transform.position)
+Get Actor Location
+Set Actor Rotation (transform.rotate), 두 축 동시 회전 시 오류
+Get Actor Rotation
+Add Actor World Offset (transform.Translate)
+Add Actor World Rotation (transfotm.Rotation)
+
+Get World Delta Seconds 델타 시간
+
+int, float
+Equal: 정확히 같으면 true, 아니면 false를 반환
+Nearly Equal(float): 실수가 허용치 안에 있으면 true,
+	아니면 false를 반환
+Clamp: 값이 Min/Max 이내의 값을 갖도록 제한
+InRange: 값이 Min/Max 이내에 있으면 true, 아니면 false를 반환
+Normalize to Range: 주어진 범위로 정규화 된 값을 반환. 
+	예를 들어, 0(Min)-100(Max)을 범위로 하고, 
+	50을 입력하면 0.5 가 반환됩니다
+
+vector
+Normalize : 벡터의 단위벡터를 반환
+VectorLength : 벡터의 길이를 반환
+Dot Product : 두 벡터의 내적을 반환
+Cross Product : 두 벡터의 외적을 반환
+
+Get Actor Forward Vector: 월드 자표계에서 해당 액터의 X축이 		향하는 단위 벡터를 반환
+Get Actor Right Vector: 월드 자표계에서 해당 액터의 Y축이 
+	향하는 단위 벡터를 반환
+Get Actor Up Vector: 월드 자표계에서 해당 액터의 Z축이
+	향하는 단위 벡터를 반환
+Distance: 두 벡터의 길이를 반환
+RotateVector: 벡터를 로테이터로 회전시킨 벡터를 반환
+
+
+Find look at location: 2개의 입력을 받아서 기준 액터가 타켓 액터를 바라보는 방향
+Rotation From X Vector: 벡터를 입력받아 벡터가 가리키는	
+	방향을 Rotation으로 반환(x축은 0으로)
+
+select: 참/거짓에 따라 A 또는 B 값을 반환 합니다.
+	C++의 삼항 연산자와 유사합니다.
+Lerp: 보간, 0~1사이의 x축(또는 시간 축) 값을 입력 받아,
+	y1 과 y2의 보간 값을 반환합니다.
+interpToConstant: 현재 값/목적 값/보간 속력 값을 받아서
+	현재 값이 목적 값이 되도록 프레임마다 ‘보간’ 해주는
+	함수입니다. 보간하는 기울기는 속력 값이 됩니다.
+interpTo: InterpToConstant가 일정한 속력으로 보간 해 준다면, 		이 함수는 시작점이나 끝지점에서 부드러운 곡선으로
+	트래킹을 합니다.
+
+폰(Pawn)
+플레이어 컨트롤러에 의해 빙의될 수 있고 쉽게 입력받을 수 있음
+	키보드 이벤트 Z, X, W, S, A, D 등
+	밖에서 플레이어 자동 빙의 player0으로 설정해야 함
+
+
+블루프린트 -> 플레이어 컨트롤러 -> 디폴트 폰 클래스를 내가 만든거로
+
+프로젝트 세팅 -> 입력 -> 바인딩 -> 입력 키 세팅
+세팅한 것을 함수처럼 블루프린트에서 사용 가능
+
+
+컴포넌트: 액터에 부착(Attach)하여 사용가능한 하나의 객체이자 속성/기능 묶음 (=블루프린터에 큐브나 스피어 만든거)
+
+시퀀스: 블루프린터에서 순서대로 실행, 깔끔해짐
+
+컴포넌트 함수
+local 좌표계
+	SetRelativeLocation
+	AddRelativeLocation
+	SetRelativeRotation
+	AddRelativeRotation
+	Set Relative 3D scale
+
+global 좌표계
+	SetWorldLocation
+	AddWorldOffset
+	SetWorldRotation
+	AddWorldRotation
+	Set World 3D scale
+
+스태틱 메시 컴포넌트
+소켓: 컴포넌트에 위치 지정(스태텍 메시, 메시에서 선언), 가벼움
+
+카메라 컴포넌트
+	포스트 프로세스(후처리, 포토샵같은 보정)
+	종횡비 제한 누른 후에 카메라 종횡비 조정 가능
+	투영모드, 시야각 등 설정
+
+스프링암 컴포넌트
+	카메라 부모로 설정해놓기
+	카메라 지연(부드럽게)
+	카메라의 상대적 위치 설정 가능
+
+타임라인 컴포넌트
+	카세트 플레이어 or 동영상 재생장치 같은 느낌
+	+트랙 -> float트랙: 커스텀 ㅡ래프 생성해서 값 쓸 수 있음
+	play from start에 넣어야 이벤트 작동 시 실행
+
+플로팅 폰 이동
+	폰의 간단한 움직임 조작
+	플로팅 폰 이동 -> add input vector 해서 이동 가능
+
+append
+	string 문자 합치기
+
+branch (= if문)
+
+콜리전: 충돌, (무시, 겹칩: 트리거, 막힘: 콜리전 3가지)
+겹침
+	actorBeginOverlap
+	actorEndOverlap
+
+트레이스: 레이캐스트(광선)
+	Line Trace By Channel
+
+Destroy Actor: 삭제
+
