@@ -2,6 +2,8 @@
 
 
 #include "Character_CppTest.h"
+#include "kismet/kismetSystemLibrary.h"
+#include "Arrow.h"
 
 // Sets default values
 ACharacter_CppTest::ACharacter_CppTest()
@@ -16,6 +18,7 @@ void ACharacter_CppTest::BeginPlay()
 {
 	Super::BeginPlay();
 	
+
 }
 
 // Called every frame
@@ -30,5 +33,34 @@ void ACharacter_CppTest::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	PlayerInputComponent->BindAction("FireBullet", IE_Pressed, this, &ACharacter_CppTest::FireBullet);
+	PlayerInputComponent->BindAxis("myMoveRight", this, &ACharacter_CppTest::MoveRight);
+
+}
+
+void ACharacter_CppTest::FireBullet()
+{
+	UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Fire!"), true, true,
+		FLinearColor::Blue, 4.0f);
+	if (SomeEvent.IsBound())
+	{
+		SomeEvent.Execute();
+	}
+	if (SomeEvent_OneParam.IsBound())
+	{
+		SomeEvent_OneParam.Execute(5);
+	}
+	if (SomeEvent_Multi.IsBound())
+	{
+		SomeEvent_Multi.Broadcast();
+	}
+
+	GetWorld()->SpawnActor<AArrow>(FVector::ZeroVector, FRotator::ZeroRotator);
+}
+
+void ACharacter_CppTest::MoveRight(float value)
+{
+	UKismetSystemLibrary::PrintString(GetWorld(), TEXT("MoveRight"), true, true, 
+		FLinearColor::Blue, GetWorld()->DeltaTimeSeconds);
 }
 
